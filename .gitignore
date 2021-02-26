@@ -1,0 +1,5 @@
+/results
+/src/test/resources/data/mined-data/users
+/.idea
+/gatling-maven-plugin-demo.iml
+/target
