@@ -4,6 +4,8 @@ import config.Data.{courts, users}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
+import scala.concurrent.duration.DurationInt
+
 class ProbationRecordScreen extends Simulation {
 
   private def getProperty(propertyName: String, defaultValue: String): String = {
@@ -73,19 +75,50 @@ class ProbationRecordScreen extends Simulation {
       .headers(headers_4))
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
-      .get("/${CourtCode}/cases/2021-02-08")
+      .get("/${CourtCode}/cases/2021-03-08")
       .headers(headers_4)
       .check(css("title").is("Cases - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
-      .post("/${CourtCode}/cases/2021-02-08")
+      .post("/${CourtCode}/cases/2021-03-08")
       .headers(headers_8)
       .formParam("probationStatus", "Current")
-    .check(regex("/case/([0-9A-Z]*)/summary").saveAs("caseNo")))
+    .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
-      println("CaseNo is: " + session("caseNo").as[String])
+      val i = session("caseNo").as[List[String]].length
+      val start = 1
+      val test = session("caseNo").as[List[String]]
+      //println(test(1))
+
+      val end   = i
+      val num = new scala.util.Random
+      val rnd = start + num.nextInt( (end - start) + 1 )
+      //val randomCaseNumber = test(rnd)
+      session.set("rndCaseNo", "test")
+      //exec(session => session.set("rndCaseNo", test(2)))
+      //session.set("rndCaseNo",randomCaseNumber)
+      println("This is is the newly created variable: " + session("rndCaseNo").as[String])
+
+//      for (x <- 1 to i) {
+//        println(session("${caseNo.random()}").as[Int])
+//      }
       session
     })
+    //.exec(session => session.set("rndCaseNo", test(2)))
+
+
+//    .exec(session => {
+//      for (rnd <- 1 to i) {
+//        println(session("caseNo._2").as[List[Int]])
+//      }
+//      session
+//    })
+
+    //.check(regex("/case/([0-9A-Z]*)/summary").saveAs("caseNo")))
+//    .exec(session => {
+//      println("CaseNo is: " + session("caseNo1").as[List[Int]])
+//      session
+//    })
     .pause(thinkTime)
     .exec(http("GetSummary")
       .get("/${CourtCode}/case/${caseNo}/summary")
@@ -95,9 +128,24 @@ class ProbationRecordScreen extends Simulation {
     .pause(thinkTime)
     .exec(http("GetRecordScreen")
       .get("/${CourtCode}/case/${caseNo}/record")
+      .requestTimeout(1.minutes)
       .headers(headers_4)
       .check(css("title").is("Probation record - Prepare a case for sentence"))
-      .check(status.is(200)))
-
+      .check(status.is(200))
+    .check(xpath("(//form[@name=\"previousOrders\"][@id=\"previousOrders\"])"))
+    .check(responseTimeInMillis))
   setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
 }
+
+//  setUp(
+//
+//    scn.inject
+//    (nothingFor(5 seconds),
+//      //atOnceUsers(userCount)
+//      rampUsers(userCount).during(testDuration.minutes)
+//    )
+//
+//  )
+//    .protocols(httpProtocol)
+//
+//}
