@@ -88,52 +88,35 @@ class ProbationRecordScreen extends Simulation {
       val i = session("caseNo").as[List[String]].length
       val start = 1
       val test = session("caseNo").as[List[String]]
-      //println(test(1))
-
       val end   = i
       val num = new scala.util.Random
-      val rnd = start + num.nextInt( (end - start) + 1 )
-      //val randomCaseNumber = test(rnd)
-      session.set("rndCaseNo", "test")
-      //exec(session => session.set("rndCaseNo", test(2)))
-      //session.set("rndCaseNo",randomCaseNumber)
+      val rnd = start + num.nextInt( (end - start))
+      session.set("rndCaseNo", test(rnd))
+    })
+    .exec(session => {
       println("This is is the newly created variable: " + session("rndCaseNo").as[String])
-
-//      for (x <- 1 to i) {
-//        println(session("${caseNo.random()}").as[Int])
-//      }
       session
     })
-    //.exec(session => session.set("rndCaseNo", test(2)))
-
-
-//    .exec(session => {
-//      for (rnd <- 1 to i) {
-//        println(session("caseNo._2").as[List[Int]])
-//      }
-//      session
-//    })
-
-    //.check(regex("/case/([0-9A-Z]*)/summary").saveAs("caseNo")))
-//    .exec(session => {
-//      println("CaseNo is: " + session("caseNo1").as[List[Int]])
-//      session
-//    })
     .pause(thinkTime)
     .exec(http("GetSummary")
-      .get("/${CourtCode}/case/${caseNo}/summary")
+      .get("/${CourtCode}/case/${rndCaseNo}/summary")
       .headers(headers_4)
       .check(css("title").is("Case summary - Prepare a case for sentence"))
       .check(status.is(200)))
     .pause(thinkTime)
     .exec(http("GetRecordScreen")
-      .get("/${CourtCode}/case/${caseNo}/record")
+      .get("/${CourtCode}/case/${rndCaseNo}/record")
       .requestTimeout(1.minutes)
       .headers(headers_4)
       .check(css("title").is("Probation record - Prepare a case for sentence"))
       .check(status.is(200))
-    .check(xpath("(//form[@name=\"previousOrders\"][@id=\"previousOrders\"])"))
+    .check(css("#previousOrders").exists)
+      .check(css("body").saveAs("body"))
     .check(responseTimeInMillis))
+    .exec(session => {
+      println(session("body").as[String])
+      session
+    })
   setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
 }
 
