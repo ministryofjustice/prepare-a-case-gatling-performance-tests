@@ -1,4 +1,5 @@
 
+import config.Config.{headers_0, headers_2}
 import config.Data.{courts, users}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
@@ -39,8 +40,6 @@ class ProbationRecordScreen extends Simulation {
 
   val httpProtocol = http
     .baseUrl("https://prepare-a-case-"+env+".apps.live-1.cloud-platform.service.justice.gov.uk")
-    .inferHtmlResources()
-    .acceptHeader("image/webp,*/*")
     .acceptEncodingHeader("gzip, deflate")
     .acceptLanguageHeader("en-GB,en;q=0.5")
     .userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0")
@@ -59,28 +58,25 @@ class ProbationRecordScreen extends Simulation {
     //.exec(CourtsPage.Courts)
     .exec(http("LoginPage")
       .get(authUrl + "/login")
-      //.headers(headers_0)
+      .headers(headers_0)
       .check(status.is(200)))
     .pause(thinkTime)
     .exec(http("LoginForm")
       .post(authUrl + "/login")
-      //.headers(headers_2)
+      .headers(headers_2)
       .formParam("username", "${ParamUsername}")
       .formParam("password", "${ParamPassword}")
       .check(status.is(200)))
     .pause(thinkTime)
     .exec(http("SelectCourt")
       .get("/select-court/${CourtCode}"))
-      //.headers(headers_4))
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
       .get("/${CourtCode}/cases/2021-03-08")
-      //.headers(headers_4)
       .check(css("title").is("Cases - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
       .post("/${CourtCode}/cases/2021-03-08")
-      //.headers(headers_8)
       .formParam("probationStatus", "Current")
     .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
@@ -99,14 +95,12 @@ class ProbationRecordScreen extends Simulation {
     .pause(thinkTime)
     .exec(http("GetSummary")
       .get("/${CourtCode}/case/${rndCaseNo}/summary")
-      //.headers(headers_4)
       .check(css("title").is("Case summary - Prepare a case for sentence"))
       .check(status.is(200)))
     .pause(thinkTime)
     .exec(http("GetRecordScreen")
       .get("/${CourtCode}/case/${rndCaseNo}/record")
       .requestTimeout(1.minutes)
-      //.headers(headers_4)
       .check(css("title").is("Probation record - Prepare a case for sentence"))
       .check(status.is(200))
     .check(css("#previousOrders").exists)
