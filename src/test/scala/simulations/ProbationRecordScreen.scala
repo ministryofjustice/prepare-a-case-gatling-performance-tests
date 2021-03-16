@@ -110,18 +110,18 @@ class ProbationRecordScreen extends Simulation {
       println(session("body").as[String])
       session
     })
-  setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
-}
-
-//  setUp(
-//
-//    scn.inject
-//    (nothingFor(5 seconds),
-//      //atOnceUsers(userCount)
-//      rampUsers(userCount).during(testDuration.minutes)
-//    )
-//
-//  )
-//    .protocols(httpProtocol)
-//
+//  setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
 //}
+
+  setUp(
+
+    scn.inject
+    (nothingFor(5 seconds),
+      //atOnceUsers(userCount)
+      rampUsers(userCount).during(testDuration.minutes)
+    )
+
+  )
+    .protocols(httpProtocol)
+
+}
