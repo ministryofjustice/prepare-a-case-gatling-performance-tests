@@ -22,6 +22,8 @@ class ProbationRecordScreen extends Simulation {
   //Set user as (message count) in this case set to 1.
   def userCount: Int = getProperty("Users", "2").toInt
 
+  def dateOfTest: String = getProperty("Date", "2021-03-19")
+
   //def rampDuration: Int = getProperty("Ramp_Duration", "10").toInt
   def env: String = getProperty("Env","preprod")
 
@@ -35,6 +37,7 @@ class ProbationRecordScreen extends Simulation {
     println(s"Test duration is: ${testDuration} minutes.")
     println(s"The enviroment that is being tested against is: ${env}.")
     println(s"The test is running with pauses/thinktimes of ${thinkTime} seconds between requests.")
+    println(s"The test will run against the following date: ${dateOfTest}" )
     //println(s"The test is running using ${userUsed} user.")
   }
 
@@ -72,11 +75,11 @@ class ProbationRecordScreen extends Simulation {
       .get("/select-court/${CourtCode}"))
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
-      .get("/${CourtCode}/cases/2021-03-08")
+      .get("/${CourtCode}/cases/"+dateOfTest+"/")
       .check(css("title").is("Cases - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
-      .post("/${CourtCode}/cases/2021-03-08")
+      .post("/${CourtCode}/cases/"+dateOfTest+"/")
       .formParam("probationStatus", "Current")
     .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
@@ -103,13 +106,13 @@ class ProbationRecordScreen extends Simulation {
       .requestTimeout(1.minutes)
       .check(css("title").is("Probation record - Prepare a case for sentence"))
       .check(status.is(200))
-    .check(css("#previousOrders").exists)
+    .check(css("#main-content > div > div.govuk-grid-column-two-thirds > h2").exists)
       .check(css("body").saveAs("body"))
     .check(responseTimeInMillis))
-    .exec(session => {
-      println(session("body").as[String])
-      session
-    })
+//    .exec(session => {
+//      println(session("body").as[String])
+//      session
+//    })
 //  setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
 //}
 
