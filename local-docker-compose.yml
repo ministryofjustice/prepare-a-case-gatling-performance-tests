@@ -5,4 +5,4 @@ services:
     image: maven
     volumes:
       - .:/home/tools/data
-    command: "mvn clean gatling:test -f /home/tools/data/pom.xml -DUsers=1 -DDuration=5 -DEnv=preprod"
+    command: "mvn clean gatling:test -f /home/tools/data/pom.xml -DUsers=1 -DDuration=5 -DEnv=preprod -DThinkTime=3 -DDate=2021-03-19"
