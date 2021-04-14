@@ -10,7 +10,6 @@ To test it out, simply execute the following command:
 or simply:
 
  mvn clean gatling:test -DUsers=1 -DDuration=1 -DEnv=preprod -DThinkTime=5 -DDate=2021-03-30 -DUsername=<username> -DPassword=<password>
-
     
     -DUSER => This will allow the test to run with 1 user via the terminal command prompt. 
     -DDuration => This will allow the test to run for 1 minute via the terminal command prompt. - we normally specify that it should be a 10 minute test.
