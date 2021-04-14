@@ -1,7 +1,6 @@
 package pages
 
 import config.Config._
-import config.Data.users
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -14,8 +13,7 @@ object Homepage {
   val authUrl = "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"
 
 
-  val Login = feed(users)
-    .exec(flushCookieJar)
+  val Login = exec(flushCookieJar)
     .exec(session => {
       println("Logging in as " + session("ParamUsername").as[String])
       session
