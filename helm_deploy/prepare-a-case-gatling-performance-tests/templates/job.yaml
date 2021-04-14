@@ -39,5 +39,12 @@ spec:
             value: "{{ .Values.PERF_TEST_USERS }}"            
           - name: PERF_TEST_DURATION
             value: "{{ .Values.PERF_TEST_DURATION }}"
+        resources:
+          limits:
+            cpu: 5000m
+            memory: 1000Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
       restartPolicy: Never
   backoffLimit: 1
