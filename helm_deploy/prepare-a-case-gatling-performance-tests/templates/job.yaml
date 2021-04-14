@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "prepare-a-case-gatling-performance-tests"
+spec:
+  ttlSecondsAfterFinished: 0
+  template:
+    spec:
+      containers:
+      - name: "prepare-a-case-gatling-performance-tests"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        env:
+          - name: S3_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-s3-credentials
+                key: bucket_name
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-s3-credentials
+                key: access_key_id
+          - name: USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-user-credentials
+                key: username
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-user-credentials
+                key: password
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-s3-credentials
+                key: secret_access_key
+          - name: PERF_TEST_USERS
+            value: "{{ .Values.PERF_TEST_USERS }}"            
+          - name: PERF_TEST_DURATION
+            value: "{{ .Values.PERF_TEST_DURATION }}"
+      restartPolicy: Never
+  backoffLimit: 1
