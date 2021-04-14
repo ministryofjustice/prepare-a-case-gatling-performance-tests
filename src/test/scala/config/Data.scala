@@ -8,6 +8,6 @@ object Data {
   val courts = csv("src/test/resources/data/courts").random
 
   //mined-data
-  val users = csv("src/test/resources/data/mined-data/users").random
+  //val users = csv("src/test/resources/data/mined-data/users").random
 
 }
