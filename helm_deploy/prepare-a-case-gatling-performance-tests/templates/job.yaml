@@ -20,6 +20,16 @@ spec:
               secretKeyRef:
                 name: perf-test-data-s3-credentials
                 key: access_key_id
+          - name: USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-user-credentials
+                key: username
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: perf-test-data-user-credentials
+                key: password
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
