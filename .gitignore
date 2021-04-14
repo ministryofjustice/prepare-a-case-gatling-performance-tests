@@ -3,3 +3,4 @@
 /.idea
 /gatling-maven-plugin-demo.iml
 /target
+/prepare-a-case-gatling-performance-tests/createOutputVariables.csv

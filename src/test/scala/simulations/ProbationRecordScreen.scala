@@ -1,6 +1,6 @@
 
 import config.Config.{headers_0, headers_2}
-import config.Data.{courts, users}
+import config.Data.{courts}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -9,10 +9,10 @@ import scala.concurrent.duration.DurationInt
 class ProbationRecordScreen extends Simulation {
 
   //Create an output to help monitoring of devs.
-//  val createOutputVariables = {
-//    val fos = new java.io.FileOutputStream("createOutputVariables.csv")
-//    new java.io.PrintWriter(fos, true)
-//  }
+  val createOutputVariables = {
+    val fos = new java.io.FileOutputStream("createOutputVariables.csv")
+    new java.io.PrintWriter(fos, true)
+  }
 
   private def getProperty(propertyName: String, defaultValue: String): String = {
     {
@@ -26,7 +26,6 @@ class ProbationRecordScreen extends Simulation {
     //Date for message.
   }
 
-
   //Set user as (message count) in this case set to 1.
   def userCount: Int = getProperty("Users", "2").toInt
 
@@ -34,6 +33,12 @@ class ProbationRecordScreen extends Simulation {
 
   //def rampDuration: Int = getProperty("Ramp_Duration", "10").toInt
   def env: String = getProperty("Env","preprod")
+
+  //User default to using Haseeb.khan user account
+  def username: String = getProperty("username", "Haseeb.khan")
+
+  //User password required.
+  def passwd: String = getProperty("password", "L04dT3sting12")
 
   //Run once through set duration to 0.
   def testDuration: Int = getProperty("Duration", "0").toInt
@@ -45,8 +50,8 @@ class ProbationRecordScreen extends Simulation {
     println(s"Test duration is: ${testDuration} minutes.")
     println(s"The enviroment that is being tested against is: ${env}.")
     println(s"The test is running with pauses/thinktimes of ${thinkTime} seconds between requests.")
-    println(s"The test will run against the following date: ${dateOfTest}" )
-    //println(s"The test is running using ${userUsed} user.")
+    println(s"The test will run against the following date: ${dateOfTest}")
+    println(s"The following account is used in this test: ${username}")
   }
 
   val httpProtocol = http
@@ -58,11 +63,10 @@ class ProbationRecordScreen extends Simulation {
   val authUrl = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth"
 
   val scn = scenario("ProbationRecordScreen")
-    .feed(users)
     .exec(flushCookieJar)
 
     .exec(session => {
-      println("Logging in as " + session("ParamUsername").as[String])
+      println("Logging in as: " + username)
       session
     })
     .feed(courts)
@@ -76,8 +80,8 @@ class ProbationRecordScreen extends Simulation {
     .exec(http("LoginForm")
       .post(authUrl + "/login")
       .headers(headers_2)
-      .formParam("username", "${ParamUsername}")
-      .formParam("password", "${ParamPassword}")
+      .formParam("username", username)
+      .formParam("password", passwd)
       .check(status.is(200)))
     //.exec(getCookieValue(CookieKey("connect.sid")))
     .pause(thinkTime)
@@ -122,13 +126,15 @@ class ProbationRecordScreen extends Simulation {
 
 
 
-
-//    .exec(session => {
-//      for (i <- 1 to 2 ) {
-//        createOutputVariables.println(session("${rndCaseNo}"+i).as[String],session("${CourtCode}").as[String])
-//      }
-//      session
-//    })
+    foreach("${rndCaseNo}", "rndCaseNo")
+    {
+      exec(session => {
+        {
+          createOutputVariables.println(session("rndCaseNo").as[String])
+        }
+        session
+      })
+    }
 //    .exec(session => {
 //      println(session("body").as[String])
 //      session
