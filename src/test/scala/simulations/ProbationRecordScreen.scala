@@ -13,6 +13,7 @@ class ProbationRecordScreen extends Simulation {
     val fos = new java.io.FileOutputStream("createOutputVariables.csv")
     new java.io.PrintWriter(fos, true)
   }
+  createOutputVariables.print("caseNo\n")
 
   private def getProperty(propertyName: String, defaultValue: String): String = {
     {
@@ -38,7 +39,7 @@ class ProbationRecordScreen extends Simulation {
   def username: String = getProperty("username", "Haseeb.khan")
 
   //User password required.
-  def passwd: String = getProperty("password", "L04dT3sting12")
+  def passwd: String = getProperty("password", "LoadTesting")
 
   //Run once through set duration to 0.
   def testDuration: Int = getProperty("Duration", "0").toInt
@@ -124,17 +125,31 @@ class ProbationRecordScreen extends Simulation {
       .check(css("body").saveAs("body"))
     .check(responseTimeInMillis))
 
-
-
-    foreach("${rndCaseNo}", "rndCaseNo")
-    {
-      exec(session => {
-        {
-          createOutputVariables.println(session("rndCaseNo").as[String])
-        }
+  .exec(session => {
+      for (i <- 1 until 2) {
+        createOutputVariables.println(session("rndCaseNo").as[String])
+      }
         session
-      })
-    }
+    })
+
+//  createOutputVariables.print("caseNo\n")
+//  for (i <- 1 until 2) {
+//    createOutputVariables.println("${rndCaseNo}")
+//  }
+
+//    foreach("${rndCaseNo}", "rndCaseNo")
+//    {
+//      exec(session => {
+//        {
+//          createOutputVariables.println(session("rndCaseNo").as[String])
+//        }
+//        session
+//      })
+//    }
+
+
+
+
 //    .exec(session => {
 //      println(session("body").as[String])
 //      session
