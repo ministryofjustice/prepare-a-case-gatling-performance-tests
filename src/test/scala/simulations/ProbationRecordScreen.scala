@@ -61,6 +61,7 @@ class ProbationRecordScreen extends Simulation {
     .acceptLanguageHeader("en-GB,en;q=0.5")
     .userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0")
 
+  val baseUrl = "https://prepare-a-case-"+env+".apps.live-1.cloud-platform.service.justice.gov.uk"
   val authUrl = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth"
 
   val scn = scenario("ProbationRecordScreen")
@@ -73,10 +74,11 @@ class ProbationRecordScreen extends Simulation {
     .feed(courts)
     //.exec(Homepage.Login)
     //.exec(CourtsPage.Courts)
-    .exec(http("LoginPage")
-      .get(authUrl + "/login")
+    .exec(http("HomePage")
+      .get(baseUrl)
       .headers(headers_0)
-      .check(status.is(200)))
+      .check(status.is(200))
+      .check(css("title").saveAs("loginTitle")))
     .pause(thinkTime)
     .exec(http("LoginForm")
       .post(authUrl + "/login")
@@ -90,7 +92,7 @@ class ProbationRecordScreen extends Simulation {
       .get("/select-court/${CourtCode}"))
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
-      .get("/${CourtCode}/cases/"+dateOfTest+"/")
+      .get("/${CourtCode}/cases/"+dateOfTest+"")
       .check(css("title").is("Cases - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
