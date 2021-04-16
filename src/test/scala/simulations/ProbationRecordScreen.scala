@@ -57,6 +57,8 @@ class ProbationRecordScreen extends Simulation {
 
   val authUrl = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth"
 
+  val baseUrl = "https://prepare-a-case-"+env+".apps.live-1.cloud-platform.service.justice.gov.uk"
+
   val scn = scenario("ProbationRecordScreen")
     .feed(users)
     .exec(flushCookieJar)
@@ -69,7 +71,7 @@ class ProbationRecordScreen extends Simulation {
     //.exec(Homepage.Login)
     //.exec(CourtsPage.Courts)
     .exec(http("LoginPage")
-      .get(authUrl + "/login")
+      .get(baseUrl)
       .headers(headers_0)
       .check(status.is(200)))
     .pause(thinkTime)
@@ -79,7 +81,7 @@ class ProbationRecordScreen extends Simulation {
       .formParam("username", "${ParamUsername}")
       .formParam("password", "${ParamPassword}")
       .check(status.is(200)))
-    //.exec(getCookieValue(CookieKey("connect.sid")))
+    .exec(getCookieValue(CookieKey("connect.sid")))
     .pause(thinkTime)
     .exec(http("SelectCourt")
       .get("/select-court/${CourtCode}"))
