@@ -87,11 +87,11 @@ class ProbationRecordScreen extends Simulation {
       .get("/select-court/${CourtCode}"))
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
-      .get("/${CourtCode}/cases/"+dateOfTest+"/")
+      .get("/${CourtCode}/cases/"+dateOfTest)
       .check(css("title").is("Cases - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
-      .post("/${CourtCode}/cases/"+dateOfTest+"/")
+      .post("/${CourtCode}/cases/"+dateOfTest)
       .formParam("probationStatus", "Current")
     .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
