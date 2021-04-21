@@ -1,6 +1,8 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import config.Config.{headers_0, headers_2}
-import config.Data.{courts}
+import config.Data.courts
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -13,7 +15,7 @@ class ProbationRecordScreen extends Simulation {
     val fos = new java.io.FileOutputStream("createOutputVariables.csv")
     new java.io.PrintWriter(fos, true)
   }
-  createOutputVariables.print("caseNo\n")
+  createOutputVariables.print("caseNo,timeStamp\n")
 
   private def getProperty(propertyName: String, defaultValue: String): String = {
     {
@@ -25,6 +27,12 @@ class ProbationRecordScreen extends Simulation {
     }
 
     //Date for message.
+  }
+
+  //For generating date with time.
+  def local_nowTime():String = {
+
+    LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMdd_HHmmss"))
   }
 
   //Set user as (message count) in this case set to 1.
@@ -65,6 +73,7 @@ class ProbationRecordScreen extends Simulation {
   val authUrl = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth"
 
   val scn = scenario("ProbationRecordScreen")
+    .exec(session => session.set("local_nowTime", local_nowTime()))
     .exec(flushCookieJar)
 
     .exec(session => {
@@ -93,10 +102,10 @@ class ProbationRecordScreen extends Simulation {
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
       .get("/${CourtCode}/cases/"+dateOfTest+"")
-      .check(css("title").is("Cases - Prepare a case for sentence")))
+      .check(css("title").is("Case list - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
-      .post("/${CourtCode}/cases/"+dateOfTest+"/")
+      .post("/${CourtCode}/cases/"+dateOfTest+"")
       .formParam("probationStatus", "Current")
     .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
@@ -128,8 +137,8 @@ class ProbationRecordScreen extends Simulation {
     .check(responseTimeInMillis))
 
   .exec(session => {
-      for (i <- 1 until 2) {
-        createOutputVariables.println(session("rndCaseNo").as[String])
+      for (i <- 1 until 1000) {
+        createOutputVariables.println(session("rndCaseNo").as[String],session("local_nowTime").as[String])
       }
         session
     })
