@@ -137,36 +137,10 @@ class ProbationRecordScreen extends Simulation {
     .check(responseTimeInMillis))
 
   .exec(session => {
-      for (i <- 1 until 1000) {
         createOutputVariables.println(session("rndCaseNo").as[String],session("local_nowTime").as[String])
-      }
         session
     })
 
-//  createOutputVariables.print("caseNo\n")
-//  for (i <- 1 until 2) {
-//    createOutputVariables.println("${rndCaseNo}")
-//  }
-
-//    foreach("${rndCaseNo}", "rndCaseNo")
-//    {
-//      exec(session => {
-//        {
-//          createOutputVariables.println(session("rndCaseNo").as[String])
-//        }
-//        session
-//      })
-//    }
-
-
-
-
-//    .exec(session => {
-//      println(session("body").as[String])
-//      session
-//    })
-//  setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
-//}
 
   setUp(
 
