@@ -38,12 +38,13 @@ class ProbationRecordScreen extends Simulation {
   //Set user as (message count) in this case set to 1.
   def userCount: Int = getProperty("Users", "2").toInt
 
+  //Date of front end data.
   def dateOfTest: String = getProperty("Date", "2021-03-30")
 
   //def rampDuration: Int = getProperty("Ramp_Duration", "10").toInt
   def env: String = getProperty("Env","preprod")
 
-  //User default to using Haseeb.khan user account
+  //User default to using Haseeb.khan user account.
   def username: String = getProperty("username", "Haseeb.khan")
 
   //User password required.
@@ -52,6 +53,7 @@ class ProbationRecordScreen extends Simulation {
   //Run once through set duration to 0.
   def testDuration: Int = getProperty("Duration", "0").toInt
 
+  //User time pauses in between transactions.
   def thinkTime: Int = getProperty("ThinkTime", "0").toInt
 
   before {
@@ -95,7 +97,6 @@ class ProbationRecordScreen extends Simulation {
       .formParam("username", username)
       .formParam("password", passwd)
       .check(status.is(200)))
-    //.exec(getCookieValue(CookieKey("connect.sid")))
     .pause(thinkTime)
     .exec(http("SelectCourt")
       .get("/select-court/${CourtCode}"))
