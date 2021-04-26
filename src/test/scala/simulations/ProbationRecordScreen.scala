@@ -2,6 +2,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import config.Config.{headers_0, headers_2}
+
 import config.Data.courts
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
@@ -15,7 +16,9 @@ class ProbationRecordScreen extends Simulation {
     val fos = new java.io.FileOutputStream("createOutputVariables.csv")
     new java.io.PrintWriter(fos, true)
   }
+
   createOutputVariables.print("caseNo,timeStamp\n")
+
 
   private def getProperty(propertyName: String, defaultValue: String): String = {
     {
@@ -29,11 +32,13 @@ class ProbationRecordScreen extends Simulation {
     //Date for message.
   }
 
+
   //For generating date with time.
   def local_nowTime():String = {
 
     LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMdd_HHmmss"))
   }
+
 
   //Set user as (message count) in this case set to 1.
   def userCount: Int = getProperty("Users", "2").toInt
@@ -49,6 +54,13 @@ class ProbationRecordScreen extends Simulation {
 
   //User password required.
   def passwd: String = getProperty("password", "LoadTesting")
+
+  //User default to using Haseeb.khan user account
+  def username: String = getProperty("username", "Haseeb.khan")
+
+  //User password required.
+  def passwd: String = getProperty("password", "L04dT3sting12")
+
 
   //Run once through set duration to 0.
   def testDuration: Int = getProperty("Duration", "0").toInt
@@ -75,6 +87,7 @@ class ProbationRecordScreen extends Simulation {
   val authUrl = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth"
 
   val scn = scenario("ProbationRecordScreen")
+
     .exec(session => session.set("local_nowTime", local_nowTime()))
     .exec(flushCookieJar)
 

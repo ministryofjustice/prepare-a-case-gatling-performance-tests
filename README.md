@@ -9,7 +9,7 @@ To test it out, simply execute the following command:
 
 or simply:
 
- mvn clean gatling:test -DUsers=1 -DDuration=1 -DEnv=preprod -DThinkTime=5 -DDate=2021-03-30
+ mvn clean gatling:test -DUsers=1 -DDuration=1 -DEnv=preprod -DThinkTime=5 -DDate=2021-03-30 -Dusername=<username> -Dpassword=<password>
 
     
     -DUSER => This will allow the test to run with 1 user via the terminal command prompt. 
