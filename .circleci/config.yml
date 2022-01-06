@@ -22,7 +22,7 @@ workflows:
           env: "preprod"
           context:
             - hmpps-common-vars
-            - court-probation-preprod
+            - court-probation-live-preprod
           slack_notification: true
           slack_channel_name: probation_in_court_dev
           helm_additional_args: "--set PERF_TEST_USERS=100 --set PERF_TEST_DURATION=10"
@@ -40,7 +40,7 @@ workflows:
           env: "preprod"
           context:
             - hmpps-common-vars
-            - court-probation-preprod
+            - court-probation-live-preprod
           slack_notification: true
           slack_channel_name: probation_in_court_dev
           helm_additional_args: "--set PERF_TEST_USERS=500 --set PERF_TEST_DURATION=10"
@@ -58,7 +58,7 @@ workflows:
           env: "preprod"
           context:
             - hmpps-common-vars
-            - court-probation-preprod
+            - court-probation-live-preprod
           slack_notification: true
           slack_channel_name: probation_in_court_dev
           helm_additional_args: "--set PERF_TEST_USERS=1000 --set PERF_TEST_DURATION=10"
@@ -76,7 +76,7 @@ workflows:
           env: "preprod"
           context:
             - hmpps-common-vars
-            - court-probation-preprod
+            - court-probation-live-preprod
           slack_notification: true
           slack_channel_name: probation_in_court_dev
           helm_additional_args: "--set PERF_TEST_USERS=1500 --set PERF_TEST_DURATION=10"
