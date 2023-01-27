@@ -9,8 +9,12 @@ workflows:
     jobs:
       - hmpps/helm_lint:
           name: helm_lint
+          context:
+            - hmpps-common-vars
       - hmpps/build_docker:
           name: build_docker
+          context:
+            - hmpps-common-vars
       - request-preprod-100-users-approval:
           type: approval
           requires:
