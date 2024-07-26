@@ -44,16 +44,24 @@ class ProbationRecordScreen extends Simulation {
   def userCount: Int = getProperty("Users", "2").toInt
 
   //Date of front end data.
-  def dateOfTest: String = getProperty("Date", "2021-03-30")
+  //def dateOfTest: String = getProperty("Date", "2021-03-30")
+    def dateOfTest: String = getProperty("Date", "2024-07-19")
+
 
   //def rampDuration: Int = getProperty("Ramp_Duration", "10").toInt
   def env: String = getProperty("Env","preprod")
+  //added by swetha
+    def CourtCode: String = getProperty("CourtCode","B20EB")
 
   //User default to using Haseeb.khan user account.
-  def username: String = getProperty("username", "Haseeb.khan")
+  //def username: String = getProperty("username", "Haseeb.khan")
+  def username: String = getProperty("username", "SWETHA.PALREDDY")
 
   //User password required.
-  def passwd: String = getProperty("password", "LoadTesting")
+ // def passwd: String = getProperty("password", "LoadTesting")
+    def passwd: String = getProperty("password", "RakshanKanna225")
+    
+
 
   //Run once through set duration to 0.
   def testDuration: Int = getProperty("Duration", "0").toInt
@@ -68,6 +76,8 @@ class ProbationRecordScreen extends Simulation {
     println(s"The test is running with pauses/thinktimes of ${thinkTime} seconds between requests.")
     println(s"The test will run against the following date: ${dateOfTest}")
     println(s"The following account is used in this test: ${username}")
+        println(s"The following court is used in this test: ${CourtCode}")
+
   }
 
   val httpProtocol = http
@@ -86,6 +96,11 @@ class ProbationRecordScreen extends Simulation {
 
     .exec(session => {
       println("Logging in as: " + username)
+            println("baseurl: " + baseUrl)
+                        println("authurl: " + authUrl)
+
+
+
       session
     })
     .feed(courts)
@@ -98,7 +113,7 @@ class ProbationRecordScreen extends Simulation {
       .check(css("title").saveAs("loginTitle")))
     .pause(thinkTime)
     .exec(http("LoginForm")
-      .post(authUrl + "/login")
+      .post(authUrl + "/sign-in?redirect_uri=https://prepare-a-case-preprod.apps.live-1.cloud-platform.service.justice.gov.uk/login/callback")
       .headers(headers_2)
       .formParam("username", username)
       .formParam("password", passwd)
@@ -111,42 +126,55 @@ class ProbationRecordScreen extends Simulation {
       .get("/${CourtCode}/cases/"+dateOfTest+"")
       .check(css("title").is("Case list - Prepare a case for sentence")))
     .pause(thinkTime)
-    .exec(http("PostCurrentStatus")
-      .post("/${CourtCode}/cases/"+dateOfTest+"")
-      .formParam("probationStatus", "Current")
-    .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
-      val i = session("caseNo").as[List[String]].length
-      val start = 1
-      val test = session("caseNo").as[List[String]]
-      val end   = i
-      val num = new scala.util.Random
-      val rnd = start + num.nextInt( (end - start))
-      session.set("rndCaseNo", test(rnd))
-    })
-    .exec(session => {
-      println("This is is the newly created variable: " + session("rndCaseNo").as[String])
+      println("i am here ")
       session
     })
-    .pause(thinkTime)
-    .exec(http("GetSummary")
-      .get("/${CourtCode}/case/${rndCaseNo}/summary")
-      .check(css("title").is("Case summary - Prepare a case for sentence"))
-      .check(status.is(200)))
-    .pause(thinkTime)
-    .exec(http("GetRecordScreen")
-      .get("/${CourtCode}/case/${rndCaseNo}/record")
-      .requestTimeout(1.minutes)
-      .check(css("title").is("Probation record - Prepare a case for sentence"))
-      .check(status.is(200))
-    .check(css("#main-content > div > div.govuk-grid-column-two-thirds > h2").exists)
-      .check(css("body").saveAs("body"))
-    .check(responseTimeInMillis))
+    .exec(http("PostCurrentStatus")
+      .post("/${CourtCode}/cases/"+dateOfTest+"")
+      .formParam("probationStatus", "Current"))
+ .pause(thinkTime)
 
-  .exec(session => {
-        createOutputVariables.println(session("rndCaseNo").as[String],session("local_nowTime").as[String])
-        session
-    })
+
+
+
+   
+    //.exec(http("PostCurrentStatus")
+     // .post("/${CourtCode}/cases/"+dateOfTest+"")
+     // .formParam("probationStatus", "Current")
+   // .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
+   // .exec(session => {
+    //  val i = session("caseNo").as[List[String]].length
+    //  val start = 1
+    //  val test = session("caseNo").as[List[String]]
+    //  val end   = i
+    //  val num = new scala.util.Random
+    //  val rnd = start + num.nextInt( (end - start))
+    //  session.set("rndCaseNo", test(rnd))
+   // })
+   //.exec(session => {
+   //   println("This is is the newly created variable: " + session("rndCaseNo").as[String])
+   //   session
+   // })
+   // .pause(thinkTime)
+   // .exec(http("GetSummary")
+   //   .get("/${CourtCode}/case/${rndCaseNo}/summary")
+   //   .check(css("title").is("Case summary - Prepare a case for sentence"))
+   //   .check(status.is(200)))
+   // .pause(thinkTime)
+   // .exec(http("GetRecordScreen")
+   //   .get("/${CourtCode}/case/${rndCaseNo}/record")
+   //  .requestTimeout(1.minutes)
+    //  .check(css("title").is("Probation record - Prepare a case for sentence"))
+   //   .check(status.is(200))
+   // .check(css("#main-content > div > div.govuk-grid-column-two-thirds > h2").exists)
+   //   .check(css("body").saveAs("body"))
+   // .check(responseTimeInMillis))
+
+ // .exec(session => {
+ //       createOutputVariables.println(session("rndCaseNo").as[String],session("local_nowTime").as[String])
+ //       session
+ //   })
 
 
   setUp(
