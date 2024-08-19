@@ -1,4 +1,4 @@
-gatling-maven-plugin-demo
+prepare-a-case-gatling-performance-tests
 =========================
 
 Simple showcase of a maven project using the gatling-maven-plugin.
