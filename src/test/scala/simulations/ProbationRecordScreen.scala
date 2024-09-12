@@ -55,11 +55,11 @@ class ProbationRecordScreen extends Simulation {
 
   //User default to using Haseeb.khan user account.
   //def username: String = getProperty("username", "Haseeb.khan")
-  def username: String = getProperty("username", "SWETHA.PALREDDY")
+ 
 
   //User password required.
  // def passwd: String = getProperty("password", "LoadTesting")
-    def passwd: String = getProperty("password", "RakshanKanna225")
+  
     
 
 
