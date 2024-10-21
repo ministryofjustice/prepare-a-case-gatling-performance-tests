@@ -5,16 +5,16 @@ Simple showcase of a maven project using the gatling-maven-plugin.
 
 To test it out, simply execute the following command:
 
-    $mvn gatling:test -Dgatling.simulationsClass=simulations.ProbationRecordScreen
+    $./gradlew gatlingRun --simulation pac.CaseListSimulation -Dusername=[username] -Dpassword=[password] -Denv=dev -Dusers=1 
 
 or simply:
 
- mvn clean gatling:test -DUsers=1 -DDuration=1 -DEnv=preprod -DThinkTime=5 -DDate=2021-03-30 -Dusername=<username> -Dpassword=<password>
+./gradlew gatlingRun -DUsers=1 -DDuration=1 -DEnv=preprod -DThinkTime=5 -DDate=2021-03-30 -Dusername=<username> -Dpassword=<password>
 
     
-    -DUSER => This will allow the test to run with 1 user via the terminal command prompt. 
+    -Duser => This will allow the test to run with 1 user via the terminal command prompt. 
     -DDuration => This will allow the test to run for 1 minute via the terminal command prompt. - we normally specify that it should be a 10 minute test.
-    -DEnv=preprod => This will allow the tests to be ran against the preprod enviroment. - In previous tests we tested against 'preprod'.
+    -Denv=preprod => This will allow the tests to be ran against the preprod enviroment. - In previous tests we tested against 'preprod'.
     -DDate=2021-03-30 => This will allow for the front-end to show cases against the given date. It will auto input 2021-03-30 if nothing is specified on cmd line. 
     This date is chosen as auto as it has suffecient data across all courts for tests to be ran.
     -DThinkTime=5 => This will allow for the test to be ran with pauses of 5 seconds inbewteen requests.

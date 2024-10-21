@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-11
+FROM openjdk:21-jdk-slim-buster
 
 RUN groupadd --gid 2000 --system appgroup && \
     adduser --uid 2000 --system appuser --gid 2000
