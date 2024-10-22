@@ -10,14 +10,19 @@ import static io.gatling.javaapi.core.CoreDsl.rampUsers;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
-public class CaseListSimulation extends Simulation implements PacSimulation {
+public class OutcomeListSimulation extends Simulation implements PacSimulation {
 
     private static ChainBuilder courtList = exec(
             http("Load Case List Page")
                     .get("/select-court/B14LO")
                     .check(css("title").is("Case list - Prepare a case for sentence")));
 
-    ScenarioBuilder scenario = scenario("Case List")
+    private static ChainBuilder outcomesList = exec(
+            http("Load Outcomes List Page")
+                    .get("/B14LO/outcomes")
+                    .check(css("title").is("Hearing outcomes - Prepare a case for sentence")));
+
+    ScenarioBuilder scenario = scenario("Outcomes List")
             .exec(homePage)
             .pause(pause)
             .exec(authenticate)
@@ -26,7 +31,9 @@ public class CaseListSimulation extends Simulation implements PacSimulation {
             .pause(pause)
             .exec(saveCourt)
             .pause(pause)
-            .exec(courtList);
+            .exec(courtList)
+            .pause(pause)
+            .exec(outcomesList);
     {
         setUp(scenario.injectOpen(rampUsers(users).during(ramp))).protocols(httpProtocol);
     }
