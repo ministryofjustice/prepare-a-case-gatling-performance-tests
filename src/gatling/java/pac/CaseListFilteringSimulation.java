@@ -14,12 +14,12 @@ public class CaseListFilteringSimulation extends Simulation implements PacSimula
 
     private static ChainBuilder courtList = exec(
             http("Load Case List Page")
-                    .get("/select-court/B14LO")
+                    .get("/select-court/"+courtCode)
                     .check(css("title").is("Case list - Prepare a case for sentence")));
 
     private static ChainBuilder caseListFiltering = exec(
         http("Select filters on case list screen")
-                .post("/B14LO/cases")
+                .post("/"+courtCode+"/cases")
                 .formParam("probationStatus", "CURRENT")
                 .formParam("source", "COMMON_PLATFORM")
                 .check(css("#pac-filters-applied-probationStatus").exists())

@@ -14,7 +14,7 @@ public class OutcomeListSimulation extends Simulation implements PacSimulation {
 
     private static ChainBuilder courtList = exec(
             http("Load Case List Page")
-                    .get("/select-court/B14LO")
+                    .get("/select-court/"+courtCode)
                     .check(css("title").is("Case list - Prepare a case for sentence")));
 
     private static ChainBuilder outcomesList = exec(

@@ -14,17 +14,17 @@ public class OutcomeListFilteringSimulation extends Simulation implements PacSim
 
     private static ChainBuilder courtList = exec(
             http("Load Case List Page")
-                    .get("/select-court/B14LO")
+                    .get("/select-court/"+courtCode)
                     .check(css("title").is("Case list - Prepare a case for sentence")));
 
     private static ChainBuilder outcomesList = exec(
             http("Load Outcomes List Page")
-                    .get("/B14LO/outcomes")
+                    .get("/"+courtCode+"/outcomes")
                     .check(css("title").is("Hearing outcomes - Prepare a case for sentence")));
 
     private static ChainBuilder outcomeListFiltering = exec(
         http("Select filters on outcomes list screen")
-                .get("/B14LO/outcomes?hearingDate=NONE&outcomeType=REPORT_REQUESTED")
+                .get("/"+courtCode+"/outcomes?hearingDate=NONE&outcomeType=REPORT_REQUESTED")
                 .check(css("#pac-filters-applied-outcomeType").exists())
     );
 

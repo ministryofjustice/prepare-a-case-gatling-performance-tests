@@ -16,6 +16,7 @@ public interface PacSimulation {
     String env = System.getProperty("env", "dev");
     long ramp = Long.getLong("ramp", 10);
     int pause = Integer.getInteger("pause", 2);
+    String courtCode = System.getProperty("courtcode", "B14LO");
 
     String BASE_URL = "https://prepare-a-case-"+env+".apps.live-1.cloud-platform.service.justice.gov.uk";
     String AUTH_URL = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth";
@@ -45,7 +46,7 @@ public interface PacSimulation {
    ChainBuilder selectCourt = exec(
             http("SelectCourt")
                     .post("/my-courts/setup")
-                    .formParam("court", "B14LO")
+                    .formParam("court", courtCode)
                     .check(css(".govuk-heading-l").is("Which courts do you work in?")));
 
    ChainBuilder saveCourt = exec(
