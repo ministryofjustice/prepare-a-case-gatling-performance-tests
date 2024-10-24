@@ -19,7 +19,7 @@ public class OutcomeListSimulation extends Simulation implements PacSimulation {
 
     private static ChainBuilder outcomesList = exec(
             http("Load Outcomes List Page")
-                    .get("/B14LO/outcomes")
+                    .get("/"+courtCode+"/outcomes")
                     .check(css("title").is("Hearing outcomes - Prepare a case for sentence")));
 
     ScenarioBuilder scenario = scenario("Outcomes List")
