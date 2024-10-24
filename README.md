@@ -3,16 +3,17 @@ prepare-a-case-gatling-performance-tests
 
 To test it out, simply execute the following command:
 
-    $./gradlew gatlingRun --simulation pac.CaseListSimulation -Dusername=[username] -Dpassword=[password] -Denv=dev -Dusers=1 -Dramp=10 -Dpause=2
+    $./gradlew gatlingRun --simulation pac.CaseListSimulation -Dusername=[username] -Dpassword=[password] -Denv=dev -Dusers=1 -Dramp=10 -Dpause=2 -Dcourtcode=B14LO
 
     --simulation => Specify which simulation to run. Not supplying this flag will present a menu to choose the simulation to run
     --all => will run all simultions
-    -Dusername => Username for auth
-    -Dpassword => Password for auth
+    -Dusername => Username for auth [required]
+    -Dpassword => Password for auth [required]
     -Dusers => The number of simulated users, default is 1
     -Dramp => This is the duration over which the users will be lineraly started, in seconds. Default is 10
     -Denv => This will allow the tests to be ran against an enviroment. Default is dev
     -Dpause => This will allow for the test to be ran with pauses inbewteen requests. Default is 2 seconds
+    -Dcourtcode => This is the court code which is selected after login to be used for the rest of the simuilation. Default is B14LO (Sheffield).
      
 We can see response times for the requests within the /results directory, when opening this, find the date and time you ran the test
 You will then see a file named 'index.html' if you open this, it will show reports from the run.
