@@ -1,24 +1,19 @@
 prepare-a-case-gatling-performance-tests
-=========================
-
-Simple showcase of a maven project using the gatling-maven-plugin.
+=========================================
 
 To test it out, simply execute the following command:
 
-    $./gradlew gatlingRun --simulation pac.CaseListSimulation -Dusername=[username] -Dpassword=[password] -Denv=dev -Dusers=1 
+    $./gradlew gatlingRun --simulation pac.CaseListSimulation -Dusername=[username] -Dpassword=[password] -Denv=dev -Dusers=1 -Dramp=10 -Dpause=2 -Dcourtcode=B14LO
 
-or simply:
-
-./gradlew gatlingRun -DUsers=1 -DDuration=1 -DEnv=preprod -DThinkTime=5 -DDate=2021-03-30 -Dusername=<username> -Dpassword=<password>
-
-    
-    -Duser => This will allow the test to run with 1 user via the terminal command prompt. 
-    -DDuration => This will allow the test to run for 1 minute via the terminal command prompt. - we normally specify that it should be a 10 minute test.
-    -Denv=preprod => This will allow the tests to be ran against the preprod enviroment. - In previous tests we tested against 'preprod'.
-    -DDate=2021-03-30 => This will allow for the front-end to show cases against the given date. It will auto input 2021-03-30 if nothing is specified on cmd line. 
-    This date is chosen as auto as it has suffecient data across all courts for tests to be ran.
-    -DThinkTime=5 => This will allow for the test to be ran with pauses of 5 seconds inbewteen requests.
-    This is what is done to mimic real user actions via the front end. NOTE: For debugging we rn with either 0 or 1. 
+    --simulation => Specify which simulation to run. Not supplying this flag will present a menu to choose the simulation to run
+    --all => will run all simultions
+    -Dusername => Username for auth [required]
+    -Dpassword => Password for auth [required]
+    -Dusers => The number of simulated users, default is 1
+    -Dramp => This is the duration over which the users will be lineraly started, in seconds. Default is 10
+    -Denv => This will allow the tests to be ran against an enviroment. Default is dev
+    -Dpause => This will allow for the test to be ran with pauses inbewteen requests. Default is 2 seconds
+    -Dcourtcode => This is the court code which is selected after login to be used for the rest of the simuilation. Default is B14LO (Sheffield).
      
 We can see response times for the requests within the /results directory, when opening this, find the date and time you ran the test
 You will then see a file named 'index.html' if you open this, it will show reports from the run.
