@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@10.1.1
-  aws-cli: circleci/aws-cli@0.1.13
 
 workflows:
   version: 2
