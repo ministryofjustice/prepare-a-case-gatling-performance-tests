@@ -32,6 +32,8 @@ workflows:
           helm_additional_args: "--set PERF_TEST_USERS=100 --set PERF_TEST_DURATION=10"
           requires:
             - request-preprod-100-users-approval
+          store_artifacts:
+            destination: test-reports
 
       - request-preprod-500-users-approval:
           type: approval
