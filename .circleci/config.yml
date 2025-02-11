@@ -4,6 +4,20 @@ orbs:
   hmpps: ministryofjustice/hmpps@10.1.1
   aws-cli: circleci/aws-cli@0.1.13
 
+jobs:
+  run_gatling_tests:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - run:
+          name: Run Gatling Tests
+          command: |
+            docker run --rm -v $(pwd)/gatling-results:/opt/gatling/results your-docker-image ./run.sh
+      - store_artifacts:
+          path: gatling-results
+          destination: gatling-results
+
 workflows:
   version: 2
   build-test-and-deploy:
@@ -21,25 +35,16 @@ workflows:
           requires:
             - helm_lint
             - build_docker
-      - hmpps/deploy_env:
+     - run_gatling_tests:
           name: run_perf_100_users
-          env: "preprod"
+          requires:
+            - request-preprod-100-users-approval
           context:
             - hmpps-common-vars
             - court-probation-live-preprod
-          slack_notification: true
-          slack_channel_name: probation_in_court_dev
-          helm_additional_args: "--set PERF_TEST_USERS=100 --set PERF_TEST_DURATION=10"
-          requires:
-            - request-preprod-100-users-approval
-          steps:
-            - run:
-                name: Run Gatling Tests
-                command: |
-                  docker run --rm -v $(pwd)/gatling-results:/opt/gatling/results your-docker-image ./run.sh
-            - store_artifacts:
-                path: gatling-results
-                destination: gatling-results-100-users
+          environment:
+            PERF_TEST_USERS: 100
+            PERF_TEST_DURATION: 10
 
       - request-preprod-500-users-approval:
           type: approval
