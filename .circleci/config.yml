@@ -39,7 +39,7 @@ workflows:
           requires:
             - helm_lint
             - build_docker
-     - run_gatling_tests:
+      - run_gatling_tests:
           name: run_perf_100_users
           requires:
             - request-preprod-100-users-approval
