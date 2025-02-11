@@ -32,8 +32,14 @@ workflows:
           helm_additional_args: "--set PERF_TEST_USERS=100 --set PERF_TEST_DURATION=10"
           requires:
             - request-preprod-100-users-approval
-          store_artifacts:
-            destination: test-reports
+          steps:
+            - run:
+                name: Run Gatling Tests
+                command: |
+                  docker run --rm -v $(pwd)/gatling-results:/opt/gatling/results your-docker-image ./run.sh
+            - store_artifacts:
+                path: gatling-results
+                destination: gatling-results-100-users
 
       - request-preprod-500-users-approval:
           type: approval
