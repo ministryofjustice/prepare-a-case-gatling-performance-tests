@@ -25,7 +25,7 @@ jobs:
       - run: 
           name: Run Gatling Tests
           command: |
-            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod -Dusers=<< parameters.perf_test_users >> -Dramp=<< parameters.perf_test_duration >>
+            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod
       - save_cache:
           paths:
             - ~/.gradle
