@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Run Gatling Tests
           command: |
-            docker run --rm -v /home/circleci/project/gatling-results:/opt/gatling/prepare-a-case-gatling-performance-tests ./run.sh
+            docker run --rm -v ${pwd}/gatling-results:/opt/gatling/prepare-a-case-gatling-performance-tests ./run.sh
       - store_artifacts:
           path: gatling-results
           destination: gatling-results
