@@ -12,12 +12,19 @@ executors:
 jobs:
   run_gatling_tests:
     executor: default
+    docker:
+      - image: docker:19.03.12
+        environment:
+          DOCKER_DRIVER: overlay2
+          DOCKER_TLS_CERTDIR: ""
     steps:
+      - setup_remote_docker:
+          version: 19.03.12
       - checkout
       - run:
           name: Run Gatling Tests
           command: |
-            docker run --rm -v $(pwd)/gatling-results:/opt/gatling/results prepare-a-case-gatling-performance-tests ./run.sh
+            docker run --rm -v $(pwd)/app/build/reports/gatling:/opt/gatling/results prepare-a-case-gatling-performance-tests ./run.sh
       - store_artifacts:
           path: gatling-results
           destination: gatling-results
