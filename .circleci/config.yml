@@ -30,8 +30,9 @@ jobs:
           paths:
             - ~/.gradle
           key: gradle-{{ checksum "build.gradle" }}
-      - store_test_results:
+      - store_artifacts:
           path: build/reports/gatling
+          destination: gatling-tests
     
     # steps:
     #   - checkout
