@@ -40,8 +40,10 @@ jobs:
 parameters:
   perf_test_users:
     type: integer
+    default: 1
   perf_test_duration:
     type: integer
+    default: 1
 
 workflows:
   version: 2
