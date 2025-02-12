@@ -24,6 +24,9 @@ jobs:
             - gradle-
       - run: 
           name: Run Gatling Tests
+          environment:
+            PERF_TEST_USERS: << parameters.perf_test_users >>
+            PERF_TEST_DURATION: << parameters.perf_test_duration >>
           command: |
             ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod -Dusers=${PERF_TEST_USERS} -Dramp=${PERF_TEST_DURATION}
       - save_cache:
@@ -68,6 +71,5 @@ workflows:
           context:
             - hmpps-common-vars
             - court-probation-live-preprod
-          parameters:
-            PERF_TEST_USERS: 100
-            PERF_TEST_DURATION: 10
+          perf_test_users: 100
+          perf_test_duration: 10
