@@ -36,16 +36,12 @@ jobs:
       - store_artifacts:
           path: build/reports/gatling
           destination: gatling-tests
-    
-    # steps:
-    #   - checkout
-    #   - run:
-    #       name: Run Gatling Tests
-    #       command: |
-    #         docker run --rm -v $(pwd)/app/build/reports/gatling:/opt/gatling/results prepare-a-case-gatling-performance-tests ./run.sh
-    #   - store_artifacts:
-    #       path: gatling-results
-    #       destination: gatling-results
+
+parameters:
+  perf_test_users:
+    type: integer
+  perf_test_duration:
+    type: integer
 
 workflows:
   version: 2
