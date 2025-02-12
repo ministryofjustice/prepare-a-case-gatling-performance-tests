@@ -12,22 +12,32 @@ executors:
 jobs:
   run_gatling_tests:
     executor: default
-    docker:
-      - image: docker:19.03.12
-        environment:
-          DOCKER_DRIVER: overlay2
-          DOCKER_TLS_CERTDIR: ""
     steps:
-      - setup_remote_docker:
-          version: 19.03.12
       - checkout
-      - run:
+      - restore_cache:
+          keys:
+            - gradle-{{ checksum "build.gradle" }}
+            - gradle-
+      - run: 
           name: Run Gatling Tests
           command: |
-            docker run --rm -v $(pwd)/app/build/reports/gatling:/opt/gatling/results prepare-a-case-gatling-performance-tests ./run.sh
-      - store_artifacts:
-          path: gatling-results
-          destination: gatling-results
+            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-{{ checksum "build.gradle" }}
+      - store_test_results:
+          path: build/test-results
+    
+    # steps:
+    #   - checkout
+    #   - run:
+    #       name: Run Gatling Tests
+    #       command: |
+    #         docker run --rm -v $(pwd)/app/build/reports/gatling:/opt/gatling/results prepare-a-case-gatling-performance-tests ./run.sh
+    #   - store_artifacts:
+    #       path: gatling-results
+    #       destination: gatling-results
 
 workflows:
   version: 2
