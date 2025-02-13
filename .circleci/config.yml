@@ -67,3 +67,48 @@ workflows:
             - court-probation-live-preprod
           perf_test_users: 100
           perf_test_duration: 10
+
+      - request-preprod-500-users-approval:
+          type: approval
+          requires:
+            - helm_lint
+            - build_docker
+      - run_gatling_tests:
+          name: run_perf_500_users
+          requires:
+            - request-preprod-500-users-approval
+          context:
+            - hmpps-common-vars
+            - court-probation-live-preprod
+          perf_test_users: 500
+          perf_test_duration: 10
+
+      - request-preprod-1000-users-approval:
+          type: approval
+          requires:
+            - helm_lint
+            - build_docker
+      - run_gatling_tests:
+          name: run_perf_1000_users
+          requires:
+            - request-preprod-1000-users-approval
+          context:
+            - hmpps-common-vars
+            - court-probation-live-preprod
+          perf_test_users: 1000
+          perf_test_duration: 10
+
+      - request-preprod-1500-users-approval:
+          type: approval
+          requires:
+            - helm_lint
+            - build_docker
+      - run_gatling_tests:
+          name: run_perf_1500_users
+          requires:
+            - request-preprod-1500-users-approval
+          context:
+            - hmpps-common-vars
+            - court-probation-live-preprod
+          perf_test_users: 1500
+          perf_test_duration: 10
