@@ -1,13 +1,5 @@
 version: 2.1
 
-parameters:
-  perf_test_users:
-    type: integer
-    default: 1
-  perf_test_duration:
-    type: integer
-    default: 1
-
 orbs:
   hmpps: ministryofjustice/hmpps@10.1.1
   aws-cli: circleci/aws-cli@0.1.13
@@ -24,6 +16,13 @@ jobs:
       jdk_tag: "21.0"
       localstack_tag: "3.0"
       postgres_tag: "14.12"
+    parameters:
+      perf_test_users:
+        type: integer
+        default: 1
+      perf_test_duration:
+        type: integer
+        default: 1
     steps:
       - checkout
       - restore_cache:
@@ -33,7 +32,7 @@ jobs:
       - run: 
           name: Run Gatling Tests
           command: |
-            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod -Dusers=<<pipeline.parameters.perf_test_users>> -Dramp=<<pipeline.parameters.perf_test_duration>>
+            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - save_cache:
           paths:
             - ~/.gradle
