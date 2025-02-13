@@ -1,5 +1,13 @@
 version: 2.1
 
+parameters:
+  perf_test_users:
+    type: integer
+    default: 1
+  perf_test_duration:
+    type: integer
+    default: 1
+
 orbs:
   hmpps: ministryofjustice/hmpps@10.1.1
   aws-cli: circleci/aws-cli@0.1.13
@@ -8,14 +16,6 @@ executors:
   default:
     docker:
       - image: circleci/python:3.8
-
-parameters:
-  perf_test_users:
-    type: integer
-    default: 1
-  perf_test_duration:
-    type: integer
-    default: 1
 
 jobs:
   run_gatling_tests:
@@ -32,8 +32,11 @@ jobs:
             - gradle-
       - run: 
           name: Run Gatling Tests
+          environment:
+            PERF_TEST_USERS: <<pipeline.parameters.perf_test_users>>
+            PERF_TEST_DURATION: <<pipeline.parameters.perf_test_duration>>
           command: |
-            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod
+            ./gradlew gatlingRun --all -Dusername=testuser -Dpassword=testpassword -Denv=preprod -Dusers=${PERF_TEST_USERS} -Dramp=${PERF_TEST_DURATION}
       - save_cache:
           paths:
             - ~/.gradle
@@ -66,5 +69,3 @@ workflows:
           context:
             - hmpps-common-vars
             - court-probation-live-preprod
-          perf_test_users: 100
-          perf_test_duration: 10
