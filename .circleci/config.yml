@@ -66,6 +66,5 @@ workflows:
           context:
             - hmpps-common-vars
             - court-probation-live-preprod
-          parameters:
-            perf_test_users: 10
-            perf_test_duration: 5
+          perf_test_users: 10
+          perf_test_duration: 5
