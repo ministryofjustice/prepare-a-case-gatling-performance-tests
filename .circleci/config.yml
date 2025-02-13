@@ -9,6 +9,14 @@ executors:
     docker:
       - image: circleci/python:3.8
 
+parameters:
+  perf_test_users:
+    type: integer
+    default: 1
+  perf_test_duration:
+    type: integer
+    default: 1
+
 jobs:
   run_gatling_tests:
     executor: 
@@ -34,14 +42,6 @@ jobs:
           path: build/reports/gatling
           destination: gatling-tests
 
-parameters:
-  perf_test_users:
-    type: integer
-    default: 1
-  perf_test_duration:
-    type: integer
-    default: 1
-
 workflows:
   version: 2
   build-test-and-deploy:
@@ -66,3 +66,5 @@ workflows:
           context:
             - hmpps-common-vars
             - court-probation-live-preprod
+          perf_test_users: 100
+          perf_test_duration: 10
