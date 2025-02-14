@@ -23,6 +23,9 @@ jobs:
       perf_test_duration:
         type: integer
         default: 1
+    environment:
+      PREPROD_USERNAME: ${PREPROD_USERNAME}
+      PREPROD_PASSWORD: ${PREPROD_PASSWORD}
     steps:
       - checkout
       - restore_cache:
