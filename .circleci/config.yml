@@ -25,10 +25,10 @@ jobs:
         default: 1
     steps:
       - checkout
+      - run: echo "PREPROD USERNAME is $PREPROD_USERNAME
       - run:
           name: Run Gatling Tests
           command: |
-            echo $PREPROD_USERNAME
             ./gradlew gatlingRun --all -Dusername=${PREPROD_USERNAME} -Dpassword=${PREPROD_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - store_artifacts:
           path: build/reports/gatling
@@ -56,7 +56,6 @@ workflows:
           requires:
             - request-preprod-100-users-approval
           context:
-            - hmpps-common-vars
             - court-probation-live-preprod
           perf_test_users: 100
           perf_test_duration: 10
