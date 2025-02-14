@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Run Gatling Tests
           command: |
-            ./gradlew gatlingRun --all -Dusername=<<parameters.preprod_username>> -Dpassword=<<parameters.preprod_password>> -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
+            ./gradlew gatlingRun --all -Dusername=${CIRCLE_PREPROD_USERNAME} -Dpassword=${CIRCLE_PREPROD_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - save_cache:
           paths:
             - ~/.gradle
@@ -73,8 +73,6 @@ workflows:
             - court-probation-live-preprod
           perf_test_users: 100
           perf_test_duration: 10
-          preprod_username: ${PREPROD_USERNAME}
-          preprod_password: ${PREPROD_PASSWORD}
 
       - request-preprod-500-users-approval:
           type: approval
