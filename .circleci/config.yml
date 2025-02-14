@@ -29,6 +29,7 @@ jobs:
       - run:
           name: Run Gatling Tests
           command: |
+            echo "PREPROD USERNAME is ${PREPROD_USERNAME}"
             export USERNAME="${PREPROD_USERNAME}"
             ./gradlew gatlingRun --all -Dusername=$USERNAME -Dpassword=$PASSWORD -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - store_artifacts:
