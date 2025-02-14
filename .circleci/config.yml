@@ -73,8 +73,8 @@ workflows:
             - court-probation-live-preprod
           perf_test_users: 100
           perf_test_duration: 10
-          preprod_username: $PREPROD_USERNAME
-          preprod_password: $PREPROD_PASSWORD
+          preprod_username: ${PREPROD_USERNAME}
+          preprod_password: ${PREPROD_PASSWORD}
 
       - request-preprod-500-users-approval:
           type: approval
