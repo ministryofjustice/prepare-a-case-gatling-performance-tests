@@ -23,9 +23,6 @@ jobs:
       perf_test_duration:
         type: integer
         default: 1
-    environment:
-      PREPROD_USERNAME: ${PREPROD_USERNAME}
-      PREPROD_PASSWORD: ${PREPROD_PASSWORD}
     steps:
       - checkout
       - restore_cache:
@@ -34,10 +31,10 @@ jobs:
             - gradle-
       - run: 
           name: Run Gatling Tests
+          environment:
+            PREPROD_USERNAME: ${PREPROD_USERNAME}
+            PREPROD_PASSWORD: ${PREPROD_PASSWORD}
           command: |
-            $ echo ${PREPROD_USERNAME}
-            $ echo $PREPROD_USERNAME
-            $ echo "$PREPROD_USERNAME"
             ./gradlew gatlingRun --all -Dusername=${PREPROD_USERNAME} -Dpassword=${PREPROD_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - save_cache:
           paths:
