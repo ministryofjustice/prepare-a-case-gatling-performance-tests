@@ -25,7 +25,7 @@ jobs:
         default: 1
     steps:
       - checkout
-      - run: echo "PREPROD USERNAME is $PREPROD_USERNAME
+      - run: echo "PREPROD USERNAME is $PREPROD_USERNAME"
       - run:
           name: Run Gatling Tests
           command: |
