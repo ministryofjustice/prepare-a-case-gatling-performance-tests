@@ -11,7 +11,7 @@ executors:
 jobs:
   run_gatling_tests:
     executor: 
-      name: hmpps/java_localstack_postgres
+      name: hmpps/java
       jdk_tag: "21.0"
     parameters:
       perf_test_users:
