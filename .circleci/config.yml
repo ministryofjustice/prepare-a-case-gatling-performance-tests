@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@10.1.1
+  aws-cli: circleci/aws-cli@0.1.13
 
 executors:
   default:
@@ -11,8 +12,10 @@ executors:
 jobs:
   run_gatling_tests:
     executor: 
-      name: hmpps/java
+      name: hmpps/java_localstack_postgres
       jdk_tag: "21.0"
+      localstack_tag: "3.0"
+      postgres_tag: "14.12"
     parameters:
       perf_test_users:
         type: integer
