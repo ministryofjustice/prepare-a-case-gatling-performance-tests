@@ -41,7 +41,7 @@ jobs:
             - hmpps-common-vars
             - court-probation-live-preprod
           command: |
-            ./gradlew gatlingRun --all -Dusername=${PREPROD_USERNAME} -Dpassword=${PREPROD_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
+            ./gradlew gatlingRun --all -Dusername=${CIRCLE_BUILD_URL} -Dpassword=${PREPROD_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - save_cache:
           paths:
             - ~/.gradle
