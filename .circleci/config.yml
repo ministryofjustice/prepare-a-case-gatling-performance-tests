@@ -32,10 +32,8 @@ jobs:
       - run:
           name: Run Gatling Tests
           command: |
-            echo "export PREPROD_USERNAME="${PREPROD_USERNAME}" >> "$BASH_ENV"
-            echo "export PREPROD_PASSWORD="${PREPROD_PASSWORD}" >> "$BASH_ENV"
-            source "$BASH_ENV"
-            ./gradlew gatlingRun --all -Dusername=${PREPROD_USERNAME} -Dpassword=${PREPROD_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
+            echo ${KUBE_ENV_NAME}
+            ./gradlew gatlingRun --all -Dusername=${KUBE_ENV_NAME} -Dpassword=${KUBE_ENV_NAME} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - save_cache:
           paths:
             - ~/.gradle
