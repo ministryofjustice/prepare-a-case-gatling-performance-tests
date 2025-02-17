@@ -26,16 +26,11 @@ jobs:
     steps:
       - checkout
       - run:
-         name: Setup Environment Variables
-         command: |
-           echo $PREPROD_USERNAME
-           echo $PREPROD_PASSWORD
-      - run:
           name: Run Gatling Tests
-          environment:
-            PREPROD_USERNAME: $PREPROD_USERNAME
-            PREPROD_PASSWORD: $PREPROD_PASSWORD
-          command: ./gradlew gatlingRun --all -Dusername=$PREPROD_USERNAME -Dpassword=$PREPROD_PASSWORD -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
+          command: |
+            echo 'export PP_USERNAME="$PREPROD_USERNAME"' >> "$BASH_ENV"
+            echo 'export PP_PASSWORD="$PREPROD_PASSWORD"' >> "$BASH_ENV"
+            ./gradlew gatlingRun --all -Dusername=${PP_USERNAME} -Dpassword=${PP_PASSWORD} -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - store_artifacts:
           path: build/reports/gatling
           destination: gatling-tests
