@@ -28,10 +28,8 @@ jobs:
       - run:
           name: Run Gatling Tests
           command: |
-            echo $PREPROD_USERNAME
-            echo $PREPROD_PASSWORD
             printenv
-            ./gradlew gatlingRun --all -Dusername=$PP_USERNAME -Dpassword=$PP_PASSWORD -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
+            ./gradlew gatlingRun --all -Dusername=$CIRCLE_USERNAME -Dpassword=$PREPROD_PASSWORD -Denv=preprod -Dusers=<<parameters.perf_test_users>> -Dramp=<<parameters.perf_test_duration>>
       - store_artifacts:
           path: build/reports/gatling
           destination: gatling-tests
