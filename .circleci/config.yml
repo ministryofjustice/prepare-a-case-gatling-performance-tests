@@ -28,6 +28,7 @@ jobs:
       - run:
           name: Run Gatling Tests
           command: |
+            echo $PREPROD_USERNAME
             echo 'export PP_USERNAME="$PREPROD_USERNAME"' >> "$BASH_ENV"
             echo 'export PP_PASSWORD="$PREPROD_PASSWORD"' >> "$BASH_ENV"
             echo $PP_USERNAME
@@ -58,6 +59,7 @@ workflows:
           requires:
             - request-preprod-100-users-approval
           context:
+            - hmpps-common-vars
             - court-probation-live-preprod
           perf_test_users: 100
           perf_test_duration: 10
