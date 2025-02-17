@@ -40,6 +40,10 @@ jobs:
       - mem/remember:
           env_var: PP_PASSWORD
           value: "${PP_PASSWORD}"
+      - mem/recall:
+          env_var: PP_USERNAME
+      - mem/recall:
+          env_var: PP_PASSWORD
       - run:
           name: Run Gatling Tests
           command: |
