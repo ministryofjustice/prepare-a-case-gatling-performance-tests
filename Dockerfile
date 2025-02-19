@@ -3,6 +3,9 @@ FROM openjdk:21-jdk-slim-buster
 RUN groupadd --gid 2000 --system appgroup && \
     adduser --uid 2000 --system appuser --gid 2000
 
+# Install prerequisites
+RUN apt-get update && apt-get install -y curl
+
 # working directory for gatling
 WORKDIR /app
 
