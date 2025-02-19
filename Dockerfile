@@ -4,7 +4,7 @@ RUN groupadd --gid 2000 --system appgroup && \
     adduser --uid 2000 --system appuser --gid 2000
 
 # Install prerequisites
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl unzip
 
 # working directory for gatling
 WORKDIR /app
