@@ -38,7 +38,3 @@ workflows:
           helm_additional_args: "--set PERF_TEST_USERS=100 --set PERF_TEST_DURATION=10"
           requires:
             - request-preprod-100-users-approval
-      - copy_and_store_artifacts:
-          name: copy_and_store_artifacts_100_users
-          requires:
-            - run_perf_100_users
