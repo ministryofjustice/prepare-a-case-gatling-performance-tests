@@ -42,7 +42,6 @@ workflows:
             - build_docker
       - hmpps/deploy_env:
           name: run_perf_100_users
-          retrieve_secrets: none
           env: "preprod"
           context:
             - hmpps-common-vars
