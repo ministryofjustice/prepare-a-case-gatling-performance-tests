@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+echo "Running gatling tests " ${PERF_TEST_USERS}
 
 TIMESTAMP=$(date +"%Y-%m-%dT%H-%M-%S")
 OUTPUT_PATH=prepare-a-case-gatling-performance-tests

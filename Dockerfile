@@ -1,10 +1,10 @@
-FROM openjdk:21-jdk-slim-buster
+FROM openjdk:21-jdk-bullseye
 
 RUN groupadd --gid 2000 --system appgroup && \
     adduser --uid 2000 --system appuser --gid 2000
 
 # Install prerequisites
-RUN apt-get update && apt-get install -y curl unzip
+RUN apt-get update && apt-get install -y unzip
 
 # working directory for gatling
 WORKDIR /app
@@ -21,4 +21,4 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 
 USER 2000
-CMD ["/app/run.sh"]
+ENTRYPOINT ["/app/run.sh"]
