@@ -9,6 +9,8 @@ spec:
       containers:
       - name: "prepare-a-case-gatling-performance-tests"
         image: "{{ .Values.image.repository }}:latest"
+        command:
+          - /app/run.sh
         env:
           - name: S3_BUCKET_NAME
             valueFrom:
