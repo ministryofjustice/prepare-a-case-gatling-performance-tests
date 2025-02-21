@@ -9,19 +9,19 @@ OUTPUT_PATH=prepare-a-case-gatling-performance-tests
 echo "USERNAME: " ${USERNAME}
 
 # Start from the top-level directory
-start_directory="/app/build/reports/gatling/"
+start_directory="app/build/reports/gatling"
 
 # Function to recursively echo contents of a directory
-function echo_contents() {
+echo_contents () {
   local directory=$1
-  for entry in "$directory"/*; {
+  for entry in "$directory"/*; do
     if [ -d "$entry" ]; then
       echo "Directory: $entry"
       echo_contents "$entry"
     else
       echo "File: $entry"
-    }
-  }
+    fi
+  done
 }
 
 # Start from the specified directory
