@@ -31,6 +31,8 @@ spec:
             value: "{{ .Values.PERF_TEST_USERS }}"
           - name: PERF_TEST_DURATION
             value: "{{ .Values.PERF_TEST_DURATION }}"
+          - name: JAVA_OPTS
+            value: "-Xmx1024m"
         resources:
           limits:
             cpu: 5000m

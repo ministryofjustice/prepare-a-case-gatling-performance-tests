@@ -4,7 +4,7 @@ echo "Running gatling tests " ${PERF_TEST_USERS}
 TIMESTAMP=$(date +"%Y-%m-%dT%H-%M-%S")
 OUTPUT_PATH=prepare-a-case-gatling-performance-tests
 
-./gradlew gatlingRun --all -Dusername=${USERNAME} -Dpassword=${PASSWORD} -Denv=preprod -Dusers=${PERF_TEST_USERS} -Dramp=${PERF_TEST_DURATION} -Dpause=2
+./gradlew --debug --stacktrace gatlingRun --all -Dusername=${USERNAME} -Dpassword=${PASSWORD} -Denv=preprod -Dusers=${PERF_TEST_USERS} -Dramp=${PERF_TEST_DURATION} -Dpause=2
 
 echo "USERNAME: " ${USERNAME}
 
