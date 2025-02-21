@@ -32,14 +32,14 @@ spec:
           - name: PERF_TEST_DURATION
             value: "{{ .Values.PERF_TEST_DURATION }}"
           - name: JAVA_OPTS
-            value: "-Xmx1024m -Xms512m"
+            value: "-Xmx2048m -Xms1024m"
         resources:
           limits:
             cpu: 5000m
-            memory: 1000Mi
+            memory: 3000Mi
           requests:
-            cpu: 500m
-            memory: 500Mi
+            cpu: 5000m
+            memory: 3000Mi
       restartPolicy: Never
       serviceAccountName: "court-case-service"
   backoffLimit: 1
