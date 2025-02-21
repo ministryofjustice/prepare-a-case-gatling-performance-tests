@@ -38,3 +38,54 @@ workflows:
           helm_additional_args: "--set PERF_TEST_USERS=100 --set PERF_TEST_DURATION=10"
           requires:
             - request-preprod-100-users-approval
+
+      - request-preprod-500-users-approval:
+          type: approval
+          requires:
+            - helm_lint
+            - build_docker
+      - hmpps/deploy_env:
+          name: run_perf_500_users
+          env: "preprod"
+          context:
+            - hmpps-common-vars
+            - court-probation-live-preprod
+          slack_notification: true
+          slack_channel_name: probation_in_court_dev
+          helm_additional_args: "--set PERF_TEST_USERS=500 --set PERF_TEST_DURATION=10"
+          requires:
+            - request-preprod-500-users-approval
+
+      - request-preprod-1000-users-approval:
+          type: approval
+          requires:
+            - helm_lint
+            - build_docker
+      - hmpps/deploy_env:
+          name: run_perf_1000_users
+          env: "preprod"
+          context:
+            - hmpps-common-vars
+            - court-probation-live-preprod
+          slack_notification: true
+          slack_channel_name: probation_in_court_dev
+          helm_additional_args: "--set PERF_TEST_USERS=1000 --set PERF_TEST_DURATION=10"
+          requires:
+            - request-preprod-1000-users-approval
+
+      - request-preprod-1500-users-approval:
+          type: approval
+          requires:
+            - helm_lint
+            - build_docker
+      - hmpps/deploy_env:
+          name: run_perf_1500_users
+          env: "preprod"
+          context:
+            - hmpps-common-vars
+            - court-probation-live-preprod
+          slack_notification: true
+          slack_channel_name: probation_in_court_dev
+          helm_additional_args: "--set PERF_TEST_USERS=1500 --set PERF_TEST_DURATION=10"
+          requires:
+            - request-preprod-1500-users-approval
