@@ -8,43 +8,38 @@ spec:
     spec:
       containers:
       - name: "prepare-a-case-gatling-performance-tests"
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.image.repository }}:latest"
+        command:
+          - /app/run.sh
         env:
           - name: S3_BUCKET_NAME
             valueFrom:
               secretKeyRef:
                 name: perf-test-data-s3-credentials
                 key: bucket_name
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
-              secretKeyRef:
-                name: perf-test-data-s3-credentials
-                key: access_key_id
           - name: USERNAME
             valueFrom:
               secretKeyRef:
-                name: perf-test-data-user-credentials
+                name: performance-test-data-user-credentials
                 key: username
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
-                name: perf-test-data-user-credentials
+                name: performance-test-data-user-credentials
                 key: password
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: perf-test-data-s3-credentials
-                key: secret_access_key
           - name: PERF_TEST_USERS
-            value: "{{ .Values.PERF_TEST_USERS }}"            
+            value: "{{ .Values.PERF_TEST_USERS }}"
           - name: PERF_TEST_DURATION
             value: "{{ .Values.PERF_TEST_DURATION }}"
+          - name: JAVA_OPTS
+            value: "-Xmx2048m -Xms1024m"
         resources:
           limits:
             cpu: 5000m
-            memory: 1000Mi
+            memory: 2000Mi
           requests:
             cpu: 500m
-            memory: 500Mi
+            memory: 100Mi
       restartPolicy: Never
+      serviceAccountName: "court-case-service"
   backoffLimit: 1

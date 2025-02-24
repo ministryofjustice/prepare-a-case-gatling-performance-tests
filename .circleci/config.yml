@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@2.2
+  hmpps: ministryofjustice/hmpps@10.1.1
 
 workflows:
   version: 2
@@ -22,7 +22,6 @@ workflows:
             - build_docker
       - hmpps/deploy_env:
           name: run_perf_100_users
-          retrieve_secrets: none
           env: "preprod"
           context:
             - hmpps-common-vars
@@ -40,7 +39,6 @@ workflows:
             - build_docker
       - hmpps/deploy_env:
           name: run_perf_500_users
-          retrieve_secrets: none
           env: "preprod"
           context:
             - hmpps-common-vars
@@ -58,7 +56,6 @@ workflows:
             - build_docker
       - hmpps/deploy_env:
           name: run_perf_1000_users
-          retrieve_secrets: none
           env: "preprod"
           context:
             - hmpps-common-vars
@@ -76,7 +73,6 @@ workflows:
             - build_docker
       - hmpps/deploy_env:
           name: run_perf_1500_users
-          retrieve_secrets: none
           env: "preprod"
           context:
             - hmpps-common-vars
