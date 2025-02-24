@@ -6,3 +6,4 @@
 /prepare-a-case-gatling-performance-tests/createOutputVariables.csv
 .gradle
 build
+.vscode
