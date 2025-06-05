@@ -8,6 +8,12 @@ import scala.concurrent.duration.DurationInt
 
 class ProbationRecordScreen extends Simulation {
 
+  //Create an output to help monitoring of devs.
+//  val createOutputVariables = {
+//    val fos = new java.io.FileOutputStream("createOutputVariables.csv")
+//    new java.io.PrintWriter(fos, true)
+//  }
+
   private def getProperty(propertyName: String, defaultValue: String): String = {
     {
       {
@@ -19,10 +25,12 @@ class ProbationRecordScreen extends Simulation {
 
     //Date for message.
   }
+
+
   //Set user as (message count) in this case set to 1.
   def userCount: Int = getProperty("Users", "2").toInt
 
-  def dateOfTest: String = getProperty("Date", "2021-03-19")
+  def dateOfTest: String = getProperty("Date", "2021-03-30")
 
   //def rampDuration: Int = getProperty("Ramp_Duration", "10").toInt
   def env: String = getProperty("Env","preprod")
@@ -49,9 +57,12 @@ class ProbationRecordScreen extends Simulation {
 
   val authUrl = "https://sign-in-"+env+".hmpps.service.justice.gov.uk/auth"
 
+  val baseUrl = "https://prepare-a-case-"+env+".apps.live-1.cloud-platform.service.justice.gov.uk"
+
   val scn = scenario("ProbationRecordScreen")
     .feed(users)
     .exec(flushCookieJar)
+
     .exec(session => {
       println("Logging in as " + session("ParamUsername").as[String])
       session
@@ -60,7 +71,7 @@ class ProbationRecordScreen extends Simulation {
     //.exec(Homepage.Login)
     //.exec(CourtsPage.Courts)
     .exec(http("LoginPage")
-      .get(authUrl + "/login")
+      .get(baseUrl)
       .headers(headers_0)
       .check(status.is(200)))
     .pause(thinkTime)
@@ -70,16 +81,17 @@ class ProbationRecordScreen extends Simulation {
       .formParam("username", "${ParamUsername}")
       .formParam("password", "${ParamPassword}")
       .check(status.is(200)))
+    .exec(getCookieValue(CookieKey("connect.sid")))
     .pause(thinkTime)
     .exec(http("SelectCourt")
       .get("/select-court/${CourtCode}"))
     .pause(thinkTime)
     .exec(http("GetCasesofDate")
-      .get("/${CourtCode}/cases/"+dateOfTest+"/")
+      .get("/${CourtCode}/cases/"+dateOfTest)
       .check(css("title").is("Cases - Prepare a case for sentence")))
     .pause(thinkTime)
     .exec(http("PostCurrentStatus")
-      .post("/${CourtCode}/cases/"+dateOfTest+"/")
+      .post("/${CourtCode}/cases/"+dateOfTest)
       .formParam("probationStatus", "Current")
     .check(regex("/case/([0-9A-Z]*)/summary").findAll.saveAs("caseNo")))
     .exec(session => {
@@ -109,6 +121,16 @@ class ProbationRecordScreen extends Simulation {
     .check(css("#main-content > div > div.govuk-grid-column-two-thirds > h2").exists)
       .check(css("body").saveAs("body"))
     .check(responseTimeInMillis))
+
+
+
+
+//    .exec(session => {
+//      for (i <- 1 to 2 ) {
+//        createOutputVariables.println(session("${rndCaseNo}"+i).as[String],session("${CourtCode}").as[String])
+//      }
+//      session
+//    })
 //    .exec(session => {
 //      println(session("body").as[String])
 //      session
