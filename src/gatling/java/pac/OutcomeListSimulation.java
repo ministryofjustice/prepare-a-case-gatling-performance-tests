@@ -29,7 +29,7 @@ public class OutcomeListSimulation extends Simulation implements PacSimulation {
             .pause(pause)
             .exec(selectCourt)
             .pause(pause)
-            .exec(saveCourt)
+ //           .exec(saveCourt)
             .pause(pause)
             .exec(courtList)
             .pause(pause)

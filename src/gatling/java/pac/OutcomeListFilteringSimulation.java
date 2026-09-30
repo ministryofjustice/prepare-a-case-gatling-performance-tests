@@ -35,7 +35,7 @@ public class OutcomeListFilteringSimulation extends Simulation implements PacSim
             .pause(pause)
             .exec(selectCourt)
             .pause(pause)
-            .exec(saveCourt)
+    //        .exec(saveCourt)
             .pause(pause)
             .exec(courtList)
             .pause(pause)
